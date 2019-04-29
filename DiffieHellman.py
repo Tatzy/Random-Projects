@@ -1,39 +1,34 @@
-#It may be that I will come back to improve this later. The program is meant to be used with a partner to generate a secret key 
-#through the Diffie-Hellman public key exchange
-
-
-
-from sympy import randprime
-from sympy.ntheory import factorint
+from sympy import nextprime
+from sympy.ntheory.residue_ntheory import primitive_root
 from random import randint
 from math import gcd as bltin_gcd
 
 def coprime2(a, b):
     return bltin_gcd(a, b) == 1
 
-def primRoots(modulo):
-    g = 2
-    l = list(factorint(modulo-1).keys())
-    lw = len(l)
-    m = modulo - 1
-    mods = []
-    ini = True
-    while ini:
-        for prime in l:
-            mods.append(pow(g,int(m/prime),modulo))
-        
-        
-        if 1 in mods:
-            mods = []
-            g+=1
-            while (coprime2(g,m) == False):
-                g += 1
-        else:
-            if coprime2(g,m) == True:
-                ini = False
-            else: 
-                g+=1
-    return g
+##def primRoots(modulo):
+##    g = 2
+##    l = list(factorint(modulo-1).keys())
+##    lw = len(l)
+##    m = modulo - 1
+##    mods = []
+##    ini = True
+##    while ini:
+##        for prime in l:
+##            mods.append(pow(g,int(m/prime),modulo))
+##        
+##        
+##        if 1 in mods:
+##            mods = []
+##            g+=1
+##            while (coprime2(g,m) == False):
+##                g += 1
+##        else:
+##            if coprime2(g,m) == True:
+##                ini = False
+##            else: 
+##                g+=1
+##    return g
 
         
     
@@ -47,8 +42,8 @@ menu = input("Would you like to generate a new key (G) or accept a key (A)? ")
 
 if menu == "G":
     seed = input("Please input a large integer as a seed. ")
-    p = randprime(seed, 2*seed)
-    g = primRoots(p)
+    p = nextprime(int(seed))
+    g = primitive_root(p)
     print("Tell your partner that p = " + str(p) + " and g = " + str(g))
     a = genSecret(p)
     print("Tell your partner that your unlocked key is " + str(pow(g,a,p)))
