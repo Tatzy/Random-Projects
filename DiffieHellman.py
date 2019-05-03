@@ -1,4 +1,4 @@
-from sympy import nextprime
+from sympy import randprime
 from sympy.ntheory.residue_ntheory import primitive_root
 from random import randint
 from math import gcd as bltin_gcd
@@ -16,8 +16,8 @@ def coprime2(a, b):
 ##    while ini:
 ##        for prime in l:
 ##            mods.append(pow(g,int(m/prime),modulo))
-##        
-##        
+##
+##
 ##        if 1 in mods:
 ##            mods = []
 ##            g+=1
@@ -26,12 +26,11 @@ def coprime2(a, b):
 ##        else:
 ##            if coprime2(g,m) == True:
 ##                ini = False
-##            else: 
+##            else:
 ##                g+=1
 ##    return g
 
-        
-    
+
 def genSecret(prime):
     start = randint((prime - 1)/2,prime-1)
     while coprime2(start,(p-1)) == False:
@@ -42,16 +41,15 @@ menu = input("Would you like to generate a new key (G) or accept a key (A)? ")
 
 if menu == "G":
     seed = input("Please input a large integer as a seed. ")
-    p = nextprime(int(seed))
+    p = randprime(int(seed),2*int(seed))
     g = primitive_root(p)
     print("Tell your partner that p = " + str(p) + " and g = " + str(g))
     a = genSecret(p)
     print("Tell your partner that your unlocked key is " + str(pow(g,a,p)))
     B = input("What is your partners unlocked key? ")
     pw = pow(int(B),a,p)
-    print("Password is " + str(pw))    
+    print("Password is " + str(pw))
 
-    
 
 elif menu == "A":
     p = input("What is the value of p? ")
